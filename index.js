@@ -23,7 +23,7 @@ async function main() {
     let authUrlBase = githubOAuth
     if(authUrlBase === "") authUrlBase = githubUsername + ':' + githubPassword
 
-    repoAuthUrl = 'https://' + authUrlBase + '@github.com/' + repoAccount + '/' + repoName + '.git'
+    repoAuthUrl = '"https://' + authUrlBase + '@github.com/' + repoAccount + '/' + repoName + '.git"'
 
     if (!fs.existsSync(projectPath)) {
         log("Folder doesn't exists, creating one...");
