@@ -21,7 +21,7 @@ class AutoPull {
             log("You have to specify username and password.", this);
             return
         }
-        this.url = '"https://' + token + '@github.com/' + this.repoAccount + '/' + this.epoName + '.git"'
+        this.url = '"https://' + token + '@github.com/' + this.repoAccount + '/' + this.repoName + '.git"'
         return this
     }
 
