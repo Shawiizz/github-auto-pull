@@ -101,7 +101,7 @@ class AutoPull {
         if (!pullOut.includes('Already up to date.')) {
             //Do an action here :)
             //execSync('pm2 restart 0')
-            if(!this.functionToExecute) this.functionToExecute()
+            if(this.functionToExecute) this.functionToExecute()
         }
     }
 }
