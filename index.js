@@ -5,16 +5,16 @@ EXAMPLES
 
 ########## FOR PRIVATE REPOSITORIES ##########
 
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).auth("username", "password").start()
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).oauth("oauthtoken").start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).auth("username", "password").start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).oauth("oauthtoken").start()
 
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).auth("username", "password").withBranch("branchName").start()
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).oauth("oauthtoken").withBranch("branchName").start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).auth("username", "password").withBranch("branchName").start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).oauth("oauthtoken").withBranch("branchName").start()
 
 ########## FOR PUBLIC REPOSITORIES ##########
 
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).start()
-new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds)).withBranch("branchName").start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).start()
+new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seconds), function() {...} (execute code when files are updated)).withBranch("branchName").start()
 
 ########## STOP ##########
 
