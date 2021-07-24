@@ -3,7 +3,7 @@ const execSync = require('child_process').execSync
 const path = require('path')
 
 class AutoPull {
-    constructor(repoAccount, repoName, projectPath, pullInterval) {
+    constructor(repoAccount, repoName, projectPath, pullInterval, functionToExecute) {
         if (!repoAccount || !repoName || !projectPath || !pullInterval)
             log("You have to specify repo account, repo name, project path and the pull interval.");
         this.repoAccount = repoAccount
@@ -13,6 +13,7 @@ class AutoPull {
         this.branch = ''
         this.url = ''
         this.gitlog = true
+        this.functionToExecute = functionToExecute
         return this
     }
 
@@ -100,6 +101,7 @@ class AutoPull {
         if (!pullOut.includes('Already up to date.')) {
             //Do an action here :)
             //execSync('pm2 restart 0')
+            if(!this.functionToExecute) this.functionToExecute()
         }
     }
 }
