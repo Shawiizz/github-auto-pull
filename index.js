@@ -27,3 +27,5 @@ new AutoPull(...).disableGitLogs()
 
 You can also use global variables for authentication, but i let you do that yourself :)
 */
+
+new AutoPull("MohistMC", "Mohist", "/home/shawiizz/Bureau/test/", 5).withBranch("1.16.5").start()
