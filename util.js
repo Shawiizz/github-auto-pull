@@ -40,9 +40,9 @@ class AutoPull {
         return this
     }
 
-    buildProject(command, DestinationPath) {
+    buildProject(command) {
         execSync(command, {
-            cwd: DestinationPath
+            cwd: this.projectPath
         })
         return this
     }
