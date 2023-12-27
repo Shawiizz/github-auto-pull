@@ -78,16 +78,18 @@ class AutoPull {
         return this
     }
 
-    startAndCommand(command) {
+    startAndExec(command) {
         if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return;
-        if (this.url === '') this.url = 'https://github.com/' + this.repoAccount + '/' + this.repoName + '.git';
+        if (this.url === '') this.url = '"https://github.com/' + this.repoAccount + '/' + this.repoName + '.git"';
     
         log('Started auto pull for repo https://github.com/' + this.repoAccount + '/' + this.repoName, this);
     
-        if (!fs.existsSync(this.projectPath)) {
-            log("Folder doesn't exist, creating one...", this);
-            fs.mkdirSync(this.projectPath, { recursive: true });
-        }
+        if (this.url)
+    
+            if (!fs.existsSync(this.projectPath)) {
+                log("Folder doesn't exist, creating one...", this);
+                fs.mkdirSync(this.projectPath, { recursive: true });
+            }
     
         if (!fs.existsSync(path.join(this.projectPath, '.git'))) {
             if (!isDirEmpty(this.projectPath)) {
@@ -102,51 +104,18 @@ class AutoPull {
             });
         }
     
-        // Check if there's anything to pull before executing the command
-        const output = execSync('git status', {
-            cwd: this.projectPath
-        }).toString();
-    
-        if (!output.includes('nothing to commit, working tree clean')) {
-            log('Changes detected. Pulling changes...', this);
-            this.pull();
-            this.interval = setInterval(() => {
-                this.pull();
-            }, (this.pullInterval * 1000));
-        } else {
-            log('No changes to pull.', this);
-            return;
-        }
-    
-        // Execute the provided command initially
-        log('Executing command: ' + command, this);
-        execSync(command, {
-            cwd: this.projectPath
-        });
-
-        // Start the interval to pull changes and execute the command periodically
+        this.pull();
         this.interval = setInterval(() => {
-            const pullOutput = execSync('git status', {
-                cwd: this.projectPath
-            }).toString();
-
-            if (!pullOutput.includes('nothing to commit, working tree clean')) {
-                log('Changes detected. Pulling changes...', this);
-                this.pull();
-            } else {
-                log('No changes to pull.', this);
-            }
-
-            log('Executing command: ' + command, this);
-            try {
-                execSync(command, {
-                    cwd: this.projectPath
-                });
-            } catch (error) {
-                log('Error executing the command: ' + error.message, this);
-            }
+            this.pull();
         }, (this.pullInterval * 1000));
-    }
+    
+        if (command) {
+            execSync(command, {
+                cwd: this.projectPath
+            });
+        }
+        return this;
+    }    
 
     stop() {
         clearInterval(this.interval)

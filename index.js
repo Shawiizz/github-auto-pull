@@ -24,7 +24,7 @@ pull.stop()
 ########## DIFFERENTS START ##########
 
 new AutoPull(...).start()
-new AutoPull(...).startAndCommand("command")
+new AutoPull(...).startAndExec("command")
 
 ########## DISABLE GIT LOG ##########
 
