@@ -14,6 +14,7 @@ class AutoPull {
         this.url = ''
         this.gitlog = true
         this.functionToExecute = functionToExecute
+        this.command = ''; // Variable pour stocker la commande
         return this
     }
 
@@ -45,77 +46,50 @@ class AutoPull {
         return this
     }
 
-    start() {
-        if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return
-        if (this.url === '') this.url = '"https://github.com/' + this.repoAccount + '/' + this.repoName + '.git"'
-
-        log('Started auto pull for repo https://github.com/' + this.repoAccount + '/' + this.repoName, this)
-
-        if (this.url)
-
-            if (!fs.existsSync(this.projectPath)) {
-                log("Folder doesn't exists, creating one...", this);
-                fs.mkdirSync(this.projectPath, { recursive: true })
-            }
-
-        if (!fs.existsSync(path.join(this.projectPath, '.git'))) {
-            if (!isDirEmpty(this.projectPath)) {
-                log("The directory at " + this.projectPath + " need to be empty to clone the project !", this)
-                return
-            }
-
-            log("Project not cloned, cloning it. Please wait...", this)
-
-            execSync('git clone ' + this.url + this.branch + ' .', {
-                cwd: this.projectPath
-            })
-        }
-
-        this.pull()
-        this.interval = setInterval(() => {
-            this.pull()
-        }, (this.pullInterval * 1000));
-        return this
+    withExec(command) {
+        this.command = command; // Définir la commande à exécuter
+        return this.start(); // Démarrer immédiatement après avoir défini la commande
     }
 
-    startAndExec(command) {
-        if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return;
-        if (this.url === '') this.url = '"https://github.com/' + this.repoAccount + '/' + this.repoName + '.git"';
-    
-        log('Started auto pull for repo https://github.com/' + this.repoAccount + '/' + this.repoName, this);
-    
-        if (this.url)
-    
-            if (!fs.existsSync(this.projectPath)) {
-                log("Folder doesn't exist, creating one...", this);
-                fs.mkdirSync(this.projectPath, { recursive: true });
-            }
-    
+    start() {
+        if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return this;
+        if (this.url === '') this.url = '"https://github.com/' + this.repoAccount + '/' + this.repoName + '.git"'
+
+        // Vérification et création du dossier si nécessaire
+        if (!fs.existsSync(this.projectPath)) {
+            log("Folder doesn't exist, creating one...", this);
+            fs.mkdirSync(this.projectPath, { recursive: true });
+        }
+
+        // Vérification et clonage du projet s'il n'est pas déjà cloné
         if (!fs.existsSync(path.join(this.projectPath, '.git'))) {
             if (!isDirEmpty(this.projectPath)) {
                 log("The directory at " + this.projectPath + " needs to be empty to clone the project!", this);
-                return;
+                return this;
             }
-    
+
             log("Project not cloned, cloning it. Please wait...", this);
-    
+
             execSync('git clone ' + this.url + this.branch + ' .', {
                 cwd: this.projectPath
             });
         }
-    
-        this.pull();
+
+        this.pull(); // Effectuer le pull initial
+
         this.interval = setInterval(() => {
-            this.pull();
+            this.pull(); // Effectuer le pull à intervalles réguliers
         }, (this.pullInterval * 1000));
-    
-        if (command) {
-            execSync(command, {
+
+        // Vérifier et exécuter la commande définie (si elle existe)
+        if (this.command) {
+            execSync(this.command, {
                 cwd: this.projectPath
             });
         }
+
         return this;
-    }    
+    }   
 
     stop() {
         clearInterval(this.interval)

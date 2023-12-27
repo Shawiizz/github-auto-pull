@@ -21,10 +21,9 @@ new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seco
 const pull = new AutoPull(...)
 pull.stop()
 
-########## DIFFERENTS START ##########
+########## EXECUTE CODE ##########
 
-new AutoPull(...).start()
-new AutoPull(...).startAndExec("command")
+new AutoPull(...).withExec("command").start()
 
 ########## DISABLE GIT LOG ##########
 
