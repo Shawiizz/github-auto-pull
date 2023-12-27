@@ -118,11 +118,34 @@ class AutoPull {
             return;
         }
     
-        // Execute the provided command
+        // Execute the provided command initially
         log('Executing command: ' + command, this);
         execSync(command, {
             cwd: this.projectPath
         });
+
+        // Start the interval to pull changes and execute the command periodically
+        this.interval = setInterval(() => {
+            const pullOutput = execSync('git status', {
+                cwd: this.projectPath
+            }).toString();
+
+            if (!pullOutput.includes('nothing to commit, working tree clean')) {
+                log('Changes detected. Pulling changes...', this);
+                this.pull();
+            } else {
+                log('No changes to pull.', this);
+            }
+
+            log('Executing command: ' + command, this);
+            try {
+                execSync(command, {
+                    cwd: this.projectPath
+                });
+            } catch (error) {
+                log('Error executing the command: ' + error.message, this);
+            }
+        }, (this.pullInterval * 1000));
     }
 
     stop() {
