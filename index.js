@@ -21,6 +21,11 @@ new AutoPull("repoAccount", "repoName", "projectPath", int pullInterval (in seco
 const pull = new AutoPull(...)
 pull.stop()
 
+########## DIFFERENTS START ##########
+
+new AutoPull(...).start()
+new AutoPull(...).startAndCommand("command")
+
 ########## DISABLE GIT LOG ##########
 
 new AutoPull(...).disableGitLogs()
@@ -28,4 +33,4 @@ new AutoPull(...).disableGitLogs()
 You can also use global variables for authentication, but i let you do that yourself :)
 */
 
-new AutoPull("MohistMC", "Mohist", "/home/shawiizz/Bureau/test/", 5).withBranch("1.16.5").start()
+new AutoPull("MohistMC", "Mohist", "path", 5).withBranch("1.16.5").start()

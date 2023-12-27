@@ -78,7 +78,7 @@ class AutoPull {
         return this
     }
 
-    startAndBuild(command) {
+    startAndCommand(command) {
         if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return;
         if (this.url === '') this.url = 'https://github.com/' + this.repoAccount + '/' + this.repoName + '.git';
     
