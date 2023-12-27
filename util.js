@@ -48,7 +48,7 @@ class AutoPull {
 
     withExec(command) {
         this.command = command; // Définir la commande à exécuter
-        return this.start(); // Démarrer immédiatement après avoir défini la commande
+        return this
     }
 
     start() {
