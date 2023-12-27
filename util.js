@@ -123,12 +123,6 @@ class AutoPull {
         execSync(command, {
             cwd: this.projectPath
         });
-
-        this.pull()
-        this.interval = setInterval(() => {
-            this.pull()
-        }, (this.pullInterval * 1000));
-        return this
     }
 
     stop() {
