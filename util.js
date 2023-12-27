@@ -44,6 +44,7 @@ class AutoPull {
         execSync(command, {
             cwd: DestinationPath
         })
+        return this
     }
 
     disableGitLogs() {
