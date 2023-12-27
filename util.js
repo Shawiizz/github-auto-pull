@@ -40,13 +40,6 @@ class AutoPull {
         return this
     }
 
-    buildProject(command) {
-        execSync(command, {
-            cwd: this.projectPath
-        })
-        return this
-    }
-
     disableGitLogs() {
         this.gitlog = false
         return this
@@ -83,6 +76,55 @@ class AutoPull {
             this.pull()
         }, (this.pullInterval * 1000));
         return this
+    }
+
+    startAndBuild(command) {
+        if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return;
+        if (this.url === '') this.url = 'https://github.com/' + this.repoAccount + '/' + this.repoName + '.git';
+    
+        log('Started auto pull for repo https://github.com/' + this.repoAccount + '/' + this.repoName, this);
+    
+        if (!fs.existsSync(this.projectPath)) {
+            log("Folder doesn't exist, creating one...", this);
+            fs.mkdirSync(this.projectPath, { recursive: true });
+        }
+    
+        if (!fs.existsSync(path.join(this.projectPath, '.git'))) {
+            if (!isDirEmpty(this.projectPath)) {
+                log("The directory at " + this.projectPath + " needs to be empty to clone the project!", this);
+                return;
+            }
+    
+            log("Project not cloned, cloning it. Please wait...", this);
+    
+            execSync('git clone ' + this.url + this.branch + ' .', {
+                cwd: this.projectPath
+            });
+        }
+    
+        // Check if there's anything to pull before executing the command
+        const output = execSync('git status', {
+            cwd: this.projectPath
+        }).toString();
+    
+        if (!output.includes('nothing to commit, working tree clean')) {
+            log('Changes detected. Pulling changes...', this);
+            this.pull();
+            this.interval = setInterval(() => {
+                this.pull();
+            }, (this.pullInterval * 1000));
+        } else {
+            log('No changes to pull.', this);
+            return;
+        }
+    
+        // Execute the provided command
+        log('Executing command: ' + command, this);
+        execSync(command, {
+            cwd: this.projectPath
+        });
+    
+        return this;
     }
 
     stop() {
