@@ -40,6 +40,12 @@ class AutoPull {
         return this
     }
 
+    buildProject(command, DestinationPath) {
+        execSync(command, {
+            cwd: DestinationPath
+        })
+    }
+
     disableGitLogs() {
         this.gitlog = false
         return this
