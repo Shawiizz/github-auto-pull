@@ -55,6 +55,8 @@ class AutoPull {
         if (!this.repoAccount || !this.repoName || !this.projectPath || !this.pullInterval) return this;
         if (this.url === '') this.url = '"https://github.com/' + this.repoAccount + '/' + this.repoName + '.git"'
 
+        log('Started auto pull for repo https://github.com/' + this.repoAccount + '/' + this.repoName, this)
+
         // Vérification et création du dossier si nécessaire
         if (!fs.existsSync(this.projectPath)) {
             log("Folder doesn't exist, creating one...", this);

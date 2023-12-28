@@ -7,5 +7,3 @@ A simple way to keep a github repository updated on your local machine automatic
 
 ## How to use ?
 See examples in index.js.
-
-Adding a cool feature ;), startAndExec()... check in the index.js file
