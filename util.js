@@ -100,6 +100,13 @@ class AutoPull {
     pull() {
         log('Pulling...', this);
 
+        // Vérifier et exécuter la commande définie (si elle existe)
+        if (this.command) {
+            execSync(this.command, {
+                cwd: this.projectPath
+            });
+        }
+
         execSync('git reset --hard', {
             cwd: this.projectPath
         })
